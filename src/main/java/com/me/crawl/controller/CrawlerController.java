@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -54,13 +55,23 @@ public class CrawlerController {
     public void hello(@RequestParam("query") String query) throws IOException {
 
         webDriver.get(URL + query);
-        WebElement elements = webDriver.findElement(By.className("_z5ixr97"));
 
-        List<WebElement> hrefList = webDriver.findElements(By.cssSelector("._1szwzht a"));
-
-        for(WebElement webElement : hrefList) {
-            System.out.println(webElement.getAttribute("href"));
+        List<WebElement> elementList = webDriver.findElements(By.cssSelector("._1szwzht a"));
+        List<String> hrefList = new ArrayList<>();
+        for(WebElement webElement : elementList) {
+            hrefList.add(webElement.getAttribute("href"));
         }
+
+        for(String href : hrefList){
+            webDriver.get(href);
+            //요소 가져오기
+            String title = webDriver.findElement(By.cssSelector("._18hrqvin")).getText();
+            System.out.println(title);
+
+
+        }
+
+
 
     }
 }
